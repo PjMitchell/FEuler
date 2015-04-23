@@ -1,18 +1,9 @@
 ﻿namespace FEuler.Core
 open FEuler.Domain;
-
+open System;
 module Sequences =
-    let Fibonacci = seq {
-        let n2 = ref 0
-        yield n2
-        let n1 = ref 1
-        yield n1
-        while true do
-            let r =  ref(!n2 + !n1)
-            yield r
-            n2 := !n1
-            n1 := !r
-    }
+    let Fibonacci =Seq.unfold (fun (n1, n2) -> Some(n1 + n2, (n2, (n1 + n2)) ))(0,1) 
+     
 
 type Euler0() = 
     interface IEuler with
@@ -33,17 +24,36 @@ type Euler2() =
     interface IEuler with
         member this.GetId() = 2
         member this.Run() = printfn "By considering the terms in the Fibonacci sequence whose values do not exceed four million, find the sum of the even-valued terms."
-        member this.Summary() =               
-            let mutable n2 = 0
-            let mutable n1 = 1
-            let mutable total = 0
-            while n1 <= 4000000 do
-                let r = n1 + n2
-                printfn "%A" r
-                n2 <- n1
-                n1 <- r
-                if r%2 = 0 then total <- r + total
-            printfn "%A" total
+        member this.Summary() =  
+            Sequences.Fibonacci 
+                |> Seq.takeWhile ( fun x-> x< 4000000)
+                |> Seq.filter (fun x ->  x%2 = 0)
+                |> Seq.sum
+                |> printfn "%d"
+                       
+type Euler3() =  
+    interface IEuler with
+        member this.GetId() = 3
+        member this.Run() = printfn "What is the largest prime factor of the number 600851475143 ?"
+        member this.Summary() =  
+            let getPrimeFactors x  = 
+                let mutable current = x
+                let mutable i = 2UL
+                let result = new ResizeArray<uint64>()
+                while i < current do
+                    if current % i = 0UL then
+                        current <- current / i
+                        result.Add i
+                    else
+                        i <- i+1UL
+                result
+                
+            getPrimeFactors 600851475143UL
+                |>  Seq.max
+                |>  printfn "%A"   
+                
+            
+
    
    
    

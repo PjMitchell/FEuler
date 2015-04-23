@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace FEuler
 {
@@ -16,13 +17,6 @@ namespace FEuler
 
         public EulerService()
         {
-            //List<IEuler> options = Assembly.GetExecutingAssembly()
-            //    .GetReferencedAssemblies()
-            //    .Select(x => Assembly.Load(x))
-            //    .SelectMany(x => x.GetTypes()
-            //        .Where(t => t.GetInterfaces().Contains(typeof(IEuler)) && t.GetConstructor(Type.EmptyTypes) != null)
-            //        .Select(t => Activator.CreateInstance(t) as IEuler))
-            //    .ToList();
             List<IEuler> options = typeof(Euler0).Assembly
                 .GetTypes()
                 .Where(t => t.GetInterfaces().Contains(typeof(IEuler)) && t.GetConstructor(Type.EmptyTypes) != null)
@@ -53,9 +47,12 @@ namespace FEuler
                 euler = Activator.CreateInstance(type) as IEuler;
                 if (euler != null)
                 {
+                    var sw = Stopwatch.StartNew();
                     Console.WriteLine("");
                     euler.Summary();
                     euler.Run();
+                    sw.Stop();
+                    Console.WriteLine(string.Format("Completed in {0}ms ({1}ticks)", sw.ElapsedMilliseconds, sw.ElapsedTicks));
                     Console.WriteLine("Press any key to continue");
                     Console.ReadKey();
                 }
