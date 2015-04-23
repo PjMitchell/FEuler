@@ -46,6 +46,7 @@ type Euler3() =
                         result.Add i
                     else
                         i <- i+1UL
+                result.Add current
                 result
                 
             getPrimeFactors 600851475143UL
