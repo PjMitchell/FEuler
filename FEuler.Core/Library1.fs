@@ -3,7 +3,16 @@ open FEuler.Domain;
 open System;
 module Sequences =
     let Fibonacci =Seq.unfold (fun (n1, n2) -> Some(n1 + n2, (n2, (n1 + n2)) ))(0,1) 
-     
+module Euler =
+    let getPrimeFactors x  =
+        let rec primeDiv x i =                     
+            if i < x then
+                if x % i = 0UL then i :: primeDiv (x / i) i
+                else 
+                    primeDiv x (i + 1UL)
+            else
+                x::[]
+        primeDiv x 2UL  
 
 type Euler0() = 
     interface IEuler with
@@ -36,24 +45,11 @@ type Euler3() =
         member this.GetId() = 3
         member this.Run() = printfn "What is the largest prime factor of the number 600851475143 ?"
         member this.Summary() =  
-            let getPrimeFactors x  = 
-                let mutable current = x
-                let mutable i = 2UL
-                let result = new ResizeArray<uint64>()
-                while i < current do
-                    if current % i = 0UL then
-                        current <- current / i
-                        result.Add i
-                    else
-                        i <- i+1UL
-                result.Add current
-                result
+           
+            Euler.getPrimeFactors 600851475143UL
+                |> List.max
+                |> printfn "%A" 
                 
-            getPrimeFactors 600851475143UL
-                |>  Seq.max
-                |>  printfn "%A"   
-                
-            
 
    
    

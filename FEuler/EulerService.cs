@@ -62,8 +62,12 @@ namespace FEuler
 
         public void Run()
         {
-            Console.Write(_optionText);
-            RunSelection();
+            
+            while (true)
+            {
+                Console.Write(_optionText);
+                RunSelection();
+            }
 
         }
 
@@ -72,15 +76,10 @@ namespace FEuler
             string s = Console.ReadLine();
             int i = 0;
             if (int.TryParse(s, out i))
-            {
                 RunEuler(i);
-                Run();
-            }
+                            
             else
-            {
                 Console.Clear();
-                Run();
-            }
         }
     }
 }
