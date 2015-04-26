@@ -1,18 +1,7 @@
 ﻿namespace FEuler.Core
 open FEuler.Domain;
 open System;
-module Sequences =
-    let Fibonacci =Seq.unfold (fun (n1, n2) -> Some(n1 + n2, (n2, (n1 + n2)) ))(0,1) 
-module Euler =
-    let getPrimeFactors x  =
-        let rec primeDiv x i =                     
-            if i < x then
-                if x % i = 0UL then i :: primeDiv (x / i) i
-                else 
-                    primeDiv x (i + 1UL)
-            else
-                x::[]
-        primeDiv x 2UL  
+
 
 type Euler0() = 
     interface IEuler with
@@ -50,6 +39,20 @@ type Euler3() =
                 |> List.max
                 |> printfn "%A" 
                 
+type Euler4() =  
+    interface IEuler with
+        member this.GetId() = 4
+        member this.Run() = printfn "Find the largest palindrome made from the product of two 3-digit numbers."
+        member this.Summary() =  
+            let mutable largestPalindrome = 0
+            for a = 999 downto 101 do
+                if a * a >= largestPalindrome then
+                    for b = a downto 101 do   
+                        let ab = a*b
+                        if ab > largestPalindrome then
+                            if Euler.isPalindrome ab then
+                                largestPalindrome <- ab
+            printfn "%A" largestPalindrome
 
    
    

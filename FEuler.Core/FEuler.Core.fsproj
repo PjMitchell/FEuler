@@ -42,7 +42,8 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Library1.fs" />
+    <Compile Include="Common.fs" />
+    <Compile Include="Euler.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FEuler.Domain\FEuler.Domain.csproj">
